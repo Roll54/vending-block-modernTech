@@ -3,7 +3,9 @@ package com.furglitch.vendingblock.blockentity.transaction;
 import com.furglitch.vendingblock.Config;
 import com.furglitch.vendingblock.blockentity.VendorBlockEntity;
 import com.furglitch.vendingblock.gui.chat.Messages;
+import com.roll_54.roll_mod_currency.currency.CurrencyRepository;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -11,88 +13,97 @@ import net.minecraft.world.level.Level;
 public class VendorBlockTransaction {
 
     public static void purchase(Level level, Player buyer, VendorBlockEntity vendor) {
-        ItemStack product = vendor.inventory.getStackInSlot(0);
-        ItemStack price = vendor.inventory.getStackInSlot(10);
-        if (product.isEmpty() && price.isEmpty()) return;
+        if (!(buyer instanceof ServerPlayer serverBuyer)) {
+            return; // Currency operations require ServerPlayer
+        }
 
-        Player owner = vendor.getOwnerID() != null ? level.getPlayerByUUID(vendor.getOwnerID()) : null;
+        ItemStack product = vendor.inventory.getStackInSlot(0);
+        long price = vendor.getCurrencyPrice();
+
+        if (product.isEmpty()) {
+            buyer.sendSystemMessage(Messages.vendorEmpty());
+            return;
+        }
+
+        ServerPlayer owner = vendor.getOwnerID() != null ?
+            (ServerPlayer) level.getPlayerByUUID(vendor.getOwnerID()) : null;
         String ownerName = vendor.getOwnerUser();
         String playerName = buyer.getName().getString();
-        boolean playerHasPayment = VendorBlockInventory.checkInventory(buyer, price);
-        boolean playerHasSpace = VendorBlockInventory.checkInventorySpace(buyer, price, product);
+
         boolean blockHasStock = VendorBlockInventory.checkStock(vendor, product);
-        boolean blockHasSpace = VendorBlockInventory.checkStockSpace(vendor, product, price);
+        boolean playerHasSpace = VendorBlockInventory.checkInventorySpace(buyer, product);
 
-        if (playerHasPayment && playerHasSpace && blockHasStock && blockHasSpace && !product.isEmpty() && !price.isEmpty()) { // trade
-            giveProduct(buyer, vendor, product);
-            recievePayment(buyer, vendor, price);
-            buyer.sendSystemMessage(Messages.playerBought(product.getCount(), product.getHoverName(), ownerName, price.getCount(), price.getHoverName()));
-            if (owner != null && Config.Client.PURCHASE_MESSAGES.get()) owner.sendSystemMessage(Messages.ownerSold(product.getCount(), product.getHoverName(), playerName, price.getCount(), price.getHoverName()));
+        if (!blockHasStock) {
+            buyer.sendSystemMessage(Messages.vendorSold());
+            if (owner != null && Config.Client.OUT_OF_STOCK_MESSAGES.get()) {
+                owner.sendSystemMessage(Messages.ownerSold());
+            }
+            vendor.checkErrorState();
+            return;
+        }
 
-        } else if (playerHasSpace && blockHasStock && !product.isEmpty() && price.isEmpty()) { // giveaway 
+        if (!playerHasSpace) {
+            buyer.sendSystemMessage(Messages.playerFull());
+            vendor.checkErrorState();
+            return;
+        }
+
+        if (price == 0L) {
+            // Free giveaway
             giveProduct(buyer, vendor, product);
             buyer.sendSystemMessage(Messages.playerGiveaway(product.getCount(), product.getHoverName(), ownerName));
-            if (owner != null && Config.Client.GIVEAWAY_MESSAGES.get()) owner.sendSystemMessage(Messages.ownerGiveaway(product.getCount(), product.getHoverName(), playerName));
+            if (owner != null && Config.Client.GIVEAWAY_MESSAGES.get()) {
+                owner.sendSystemMessage(Messages.ownerGiveaway(product.getCount(), product.getHoverName(), playerName));
+            }
+        } else {
+            // Currency purchase
+            long playerBalance = CurrencyRepository.getBalance(serverBuyer.getUUID());
 
-        } else if (playerHasPayment && blockHasSpace && product.isEmpty() && !price.isEmpty()) { // donation
-            recievePayment(buyer, vendor, price);
-            buyer.sendSystemMessage(Messages.playerRequest(price.getCount(), price.getHoverName(), ownerName));
-            if (owner != null && Config.Client.DONATION_MESSAGES.get()) owner.sendSystemMessage(Messages.ownerRequest(price.getCount(), price.getHoverName(), playerName));
+            if (playerBalance < price) {
+                buyer.sendSystemMessage(Messages.playerInsufficientCurrency(price));
+                vendor.checkErrorState();
+                return;
+            }
 
-        } else if (!playerHasPayment) {
-            buyer.sendSystemMessage(Messages.playerEmpty(price.getHoverName()));
+            // Execute currency transfer
+            boolean transferSuccess = false;
+            if (vendor.isDiscarding()) {
+                // Just deduct from buyer, don't transfer to owner
+                CurrencyRepository.setBalance(serverBuyer.getUUID(), playerBalance - price);
+                transferSuccess = true;
+            } else if (owner != null) {
+                // Transfer from buyer to owner
+                transferSuccess = transfer(serverBuyer, owner, price);
+            } else {
+                // Owner offline, just deduct from buyer
+                CurrencyRepository.setBalance(serverBuyer.getUUID(), playerBalance - price);
+                transferSuccess = true;
+            }
 
-        } else if (!playerHasSpace) {
-            buyer.sendSystemMessage(Messages.playerFull());
-
-        } else if (!blockHasStock) {
-            buyer.sendSystemMessage(Messages.vendorSold());
-            if (owner != null && Config.Client.OUT_OF_STOCK_MESSAGES.get()) owner.sendSystemMessage(Messages.ownerSold());
-
-        } else if (!blockHasSpace) {
-            buyer.sendSystemMessage(Messages.vendorFull());
-            if (owner != null && Config.Client.FULL_STORAGE_MESSAGES.get()) owner.sendSystemMessage(Messages.ownerFull());
-
+            if (transferSuccess) {
+                giveProduct(buyer, vendor, product);
+                buyer.sendSystemMessage(Messages.playerBoughtCurrency(
+                    product.getCount(), product.getHoverName(), ownerName, price));
+                if (owner != null && Config.Client.PURCHASE_MESSAGES.get()) {
+                    owner.sendSystemMessage(Messages.ownerSoldCurrency(
+                        product.getCount(), product.getHoverName(), playerName, price));
+                }
+            } else {
+                buyer.sendSystemMessage(Messages.transactionFailed());
+            }
         }
-        
-        vendor.checkErrorState();
 
-        return;
+        vendor.checkErrorState();
     }
 
-    private static void recievePayment(Player buyer, VendorBlockEntity vendor, ItemStack price) {
-        int cost = price.getCount();
-        for (int i = 0; i < buyer.getInventory().getContainerSize() && cost > 0; i++) {
-            ItemStack slot = buyer.getInventory().getItem(i);
-            if (!slot.isEmpty() && ItemStack.isSameItemSameComponents(slot, price)) {
-                int toRemove = Math.min(slot.getCount(), cost);
-                slot.shrink(toRemove);
-                cost -= toRemove;
-            }
+    public static boolean transfer(ServerPlayer from, ServerPlayer to, long amount) {
+        if (amount <= 0L) {
+            return false;
         }
-
-        int transfer = price.getCount() - cost;
-        if (vendor.isDiscarding()) {
-            transfer = 0;            
-        } else {
-            for (int i = 1; i <= 9 && transfer > 0; i++) {
-                ItemStack slot = vendor.inventory.getStackInSlot(i);
-                if (slot.isEmpty()) {
-                    int space = Math.min(transfer, price.getMaxStackSize());
-                    ItemStack insert = price.copy();
-                    insert.setCount(space);
-                    vendor.inventory.setStackInSlot(i, insert);
-                    transfer -= space;
-                } else if (ItemStack.isSameItemSameComponents(slot, price)) {
-                    int space = slot.getMaxStackSize() - slot.getCount();
-                    int freeSpace = Math.min(space, transfer);
-                    if (freeSpace > 0) {
-                        slot.grow(freeSpace);
-                        transfer -= freeSpace;
-                    }
-                }
-            }
+        if (from.getUUID().equals(to.getUUID())) {
+            return false;
         }
+        return CurrencyRepository.transfer(from.getUUID(), to.getUUID(), amount);
     }
 
     private static void giveProduct(Player buyer, VendorBlockEntity vendor, ItemStack product) {
@@ -128,7 +139,6 @@ public class VendorBlockTransaction {
                     slot.grow(freeSpace);
                     transfer -= freeSpace;
                 }
-                
             }
         }
     }

@@ -55,8 +55,6 @@ public record FilterSlotUpdatePacket(BlockPos pos, int slotIndex, ItemStack stac
             if (level.getBlockEntity(packet.pos()) instanceof VendorBlockEntity vendorBlockEntity) {
                 if (packet.slotIndex() == 0) {
                     vendorBlockEntity.setFilterContents(1, packet.stack());
-                } else if (packet.slotIndex() == 10) {
-                    vendorBlockEntity.setFilterContents(2, packet.stack());
                 } else if (packet.slotIndex() == 11) {
                     vendorBlockEntity.setFilterContents(3, packet.stack());
                 }

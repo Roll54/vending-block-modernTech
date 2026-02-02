@@ -21,7 +21,7 @@ public enum VendorBlockComponentProvider implements IBlockComponentProvider {
             CompoundTag serverData = accessor.getServerData();
 
             boolean hasProduct = serverData.contains("productName");
-            boolean hasPrice = serverData.contains("priceName");
+            boolean hasPrice = serverData.contains("currencyPrice");
 
             if (hasProduct) {
                 String product = serverData.getString("productName");
@@ -36,14 +36,15 @@ public enum VendorBlockComponentProvider implements IBlockComponentProvider {
             }
 
             if (hasPrice) {
-                String product = serverData.getString("priceName");
-                int count = serverData.getInt("priceCount");
-                String text = count > 1 ? count + "x " + product : product;
+                long price = serverData.getLong("currencyPrice");
 
-                if (hasProduct) {
-                    tooltip.add(Component.translatable("jade.vendingblock.buy", text));
-                } else {
-                    tooltip.add(Component.translatable("jade.vendingblock.request", text));
+                if (price > 0) {
+                    String priceText = price + " coins";
+                    tooltip.add(Component.translatable("jade.vendingblock.buy", priceText)
+                        .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFD700)))); // Gold color
+                } else if (hasProduct) {
+                    tooltip.add(Component.translatable("jade.vendingblock.giveaway.free")
+                        .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00)))); // Green for free
                 }
             }
 

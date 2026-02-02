@@ -27,14 +27,17 @@ repositories {
     maven { url = "https://modmaven.dev/" } // JEI fallback
     maven { url = "https://maven.terraformersmc.com/" } // EMI Host
     maven { url = "https://maven.shedaniel.me/" } // REI Host
+    maven { url = "https://maven.fzzyhmstrs.me/" }
+    maven { url = "https://thedarkcolour.github.io/KotlinForForge/" }
+    maven { url = "https://cursemaven.com" }
 }
 
 base {
     archivesName = mod_id
 }
 
-// Mojang ships Java 21 to end users starting in 1.20.5, so mods should target Java 21.
-java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+// Updated to Java 25 for compatibility with roll_mod_currency
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
 
 neoForge {
     // Specify the version of NeoForge to use.
@@ -152,13 +155,17 @@ dependencies {
     compileOnly "tschipp.carryon:carryon-neoforge-${minecraft_version}:${carryon_version}"
     localRuntime "tschipp.carryon:carryon-neoforge-${minecraft_version}:${carryon_version}"
 
+    // roll_mod_currency integration
+    implementation files("jars/roll_mod_currency-1.0.0.jar")
+    localRuntime files("jars/roll_mod_currency-1.0.0.jar")
+
 
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
 // A missing property will result in an error. Properties are expanded using ${} Groovy notation.
-var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
-    var replaceProperties = [
+def generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    def replaceProperties = [
             minecraft_version      : minecraft_version,
             minecraft_version_range: minecraft_version_range,
             neo_version            : neo_version,

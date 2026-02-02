@@ -34,7 +34,7 @@ public class VendorBlockMenu extends AbstractContainerMenu{
         addPlayerInventory(inv);
 
         this.addSlot(new FilterSlot(this.blockEntity.inventory, 0, 26, 17, this.blockEntity));
-        this.addSlot(new FilterSlot(this.blockEntity.inventory, 10, 26, 53, this.blockEntity));
+        // Slot 10 removed - now using currency price field instead
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 int slotIndex = 1 + (i * 3) + j; // slots 1-9

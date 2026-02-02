@@ -11,5 +11,6 @@ public class NetworkHandler {
         registrar.playToServer(InfiniteInventoryPacket.TYPE, InfiniteInventoryPacket.STREAM_CODEC, InfiniteInventoryPacket::handle);
         registrar.playToServer(DiscardsPaymentPacket.TYPE, DiscardsPaymentPacket.STREAM_CODEC, DiscardsPaymentPacket::handle);
         registrar.playToServer(FilterSlotUpdatePacket.TYPE, FilterSlotUpdatePacket.STREAM_CODEC, FilterSlotUpdatePacket::handle);
+        registrar.playToServer(CurrencyPriceUpdatePacket.TYPE, CurrencyPriceUpdatePacket.STREAM_CODEC, CurrencyPriceUpdatePacket::handle);
     }
 }

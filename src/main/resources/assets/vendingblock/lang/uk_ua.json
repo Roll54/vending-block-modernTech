@@ -1,0 +1,82 @@
+{
+  "block.vendingblock.vending_block": "Торговий блок",
+  "block.vendingblock.display_block": "Блок вітрини",
+  "item.vendingblock.vendor_key": "Ключ продавця",
+  "ui.vendingblock.creative_tab": "Торговий блок",
+
+
+  "hint.vendingblock.sell": "продає",
+  "hint.vendingblock.buy": "за",
+  "hint.vendingblock.request": "запитує",
+  "hint.vendingblock.giveaway": "роздає",
+  "hint.vendingblock.error.sold": "Розпродано!",
+  "hint.vendingblock.error.full": "Інвентар заповнений!",
+  "hint.vendingblock.error.empty": "Не налаштовано!",
+
+  "jade.vendingblock.sell": "Продаж: %s",
+  "jade.vendingblock.buy": "Купівля: %s",
+  "jade.vendingblock.request": "Запит: %s",
+  "jade.vendingblock.giveaway": "Роздача: %s",
+  "jade.vendingblock.giveaway.free": "БЕЗКОШТОВНО",
+  "jade.vendingblock.owner": "Власник: %s",
+  "jade.vendingblock.error.sold": "Помилка: Розпродано",
+  "jade.vendingblock.error.full": "Помилка: Інвентар заповнений",
+  "jade.vendingblock.error.empty": "Помилка: Не налаштовано",
+
+  "menu.vendingblock.settings": "Налаштування продавця",
+  "menu.vendingblock.admin.settings": "Налаштування адміністратора",
+  "menu.vendingblock.admin.owner": "Власник",
+  "menu.vendingblock.display.settings": "Налаштування вітрини",
+  "menu.vendingblock.tooltip.product": "Товар",
+  "menu.vendingblock.tooltip.price": "Ціна",
+  "menu.vendingblock.tooltip.price.currency": "Ціна: %s монет",
+  "menu.vendingblock.tooltip.price.free": "Безкоштовно (Прокрутіть для встановлення ціни)",
+  "menu.vendingblock.tooltip.facade": "Фасад",
+  "menu.vendingblock.tooltip.infinite": "Нескінченний інвентар",
+  "menu.vendingblock.tooltip.discard": "Видалити оплату",
+
+  "config.vendingblock.scrolltip": "Позиція підказки прокрутки",
+  "menu.vendingblock.tooltip.scroll.product": "Прокрутіть для зміни кількості продажу",
+  "menu.vendingblock.tooltip.scroll.price": "Прокрутіть для зміни ціни купівлі",
+  "menu.vendingblock.tooltip.scroll.currency": "Прокрутіть для зміни ціни (Shift: x10, Ctrl: x100)",
+
+  "msg.vendingblock.sell": "Ви купили %s %s у %s за %s %s",
+  "msg.vendingblock.sell.currency": "Ви купили %s %s у %s за %s монет",
+  "msg.vendingblock.request": "Ви віддали %s %s гравцю %s",
+  "msg.vendingblock.giveaway": "Ви отримали %s %s від %s",
+  "msg.vendingblock.sold": "Цей торговий блок закінчився",
+  "msg.vendingblock.full": "Інвентар цього торгового блоку заповнений",
+  "msg.vendingblock.empty": "Цей торговий блок не налаштовано!",
+  "msg.vendingblock.insufficient.currency": "У вас недостатньо валюти (Потрібно: %s монет)",
+  "msg.vendingblock.transaction.failed": "Транзакція не вдалася! Спробуйте ще раз.",
+
+  "msg.vendingblock.empty.player": "У вас недостатньо %s для цієї транзакції",
+  "msg.vendingblock.full.player": "У вас недостатньо місця в інвентарі для цієї транзакції",
+
+  "msg.vendingblock.sell.owner": "Ваш торговий блок продав %s %s гравцю %s за %s %s",
+  "msg.vendingblock.sell.owner.currency": "Ваш торговий блок продав %s %s гравцю %s за %s монет",
+  "msg.vendingblock.request.owner": "Ваш торговий блок отримав %s %s від %s",
+  "msg.vendingblock.giveaway.owner": "Ваш торговий блок віддав %s %s гравцю %s",
+  "msg.vendingblock.sold.owner": "Ваш торговий блок закінчився",
+  "msg.vendingblock.full.owner": "Інвентар вашого торгового блоку заповнений",
+
+  "vendingblock.configuration.ownerNotifications": "Повідомлення власника продавця",
+  "config.vendingblock.messages.purchase": "Сповіщення про покупку",
+  "config.vendingblock.messages.giveaway": "Сповіщення про роздачу",
+  "config.vendingblock.messages.donation": "Сповіщення про пожертви",
+  "config.vendingblock.messages.outOfStock": "Сповіщення про закінчення товару",
+  "config.vendingblock.messages.fullStorage": "Сповіщення про заповнене сховище",
+
+  "config.vendingblock.server.productBlacklist": "Чорний список товарів",
+  "config.vendingblock.server.facadeBlacklist": "Чорний список фасадів",
+  "msg.vendingblock.blacklist.product": "%s знаходиться в чорному списку і не може бути проданий у торгових блоках на цьому сервері",
+  "msg.vendingblock.blacklist.fullBlock": "%s не є повним блоком і не може використовуватися як фасад торгового блоку.",
+  "msg.vendingblock.blacklist.facade": "%s наразі знаходиться в чорному списку і не може використовуватися як фасад. Це може бути пов'язано з проблемами відображення.",
+
+  "config.vendingblock.creative.keyInTab": "Ключ продавця в креативі",
+
+  "vendingblock.configuration.animationSettings": "Відображення предметів",
+  "config.vendingblock.animation.mode": "Стиль анімації"
+
+
+}

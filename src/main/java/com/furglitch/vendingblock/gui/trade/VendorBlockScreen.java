@@ -44,13 +44,12 @@ public class VendorBlockScreen extends AbstractContainerScreen<VendorBlockMenu> 
         List<FilterSlot> filterSlots = getFilterSlots();
         if (isSlotEmpty(0, filterSlots)) guiGraphics.blit(ARROW, x + 26, y + 17, 0, 0, 16, 16, 16, 16);
 
-        if (isSlotEmpty(10, filterSlots)) {
-            guiGraphics.pose().pushPose();
-            guiGraphics.pose().translate(x + 26 + 8, y + 53 + 8, 0);
-            guiGraphics.pose().mulPose(com.mojang.math.Axis.ZP.rotationDegrees(180.0F));
-            guiGraphics.blit(ARROW, -8, -8, 0, 0, 16, 16, 16, 16);
-            guiGraphics.pose().popPose();
-        }
+        // Currency price display (replacing the old price slot)
+        long price = menu.blockEntity.getCurrencyPrice();
+        String priceText = price == 0L ? "FREE" : String.valueOf(price);
+        int textX = x + 26 + 8 - (font.width(priceText) / 2);
+        int textY = y + 53 + 4;
+        guiGraphics.drawString(font, priceText, textX, textY, 0xFFFFFF, true);
 
         if (isSlotEmpty(11, filterSlots)) guiGraphics.blit(FACADE, x + 134, y + 17, 0, 0, 16, 16, 16, 16);
     }
@@ -64,10 +63,9 @@ public class VendorBlockScreen extends AbstractContainerScreen<VendorBlockMenu> 
         Slot hoveredSlot = this.getSlotUnderMouse();
         if (hoveredSlot instanceof FilterSlot filterSlot) {
             int slotIndex = filterSlot.getSlotIndex();
-            if (slotIndex == 0 || slotIndex == 10) {
+            if (slotIndex == 0) {
                 ItemStack stack = hoveredSlot.getItem();
-                if (slotIndex == 0) scrollMsg = Component.translatable("menu.vendingblock.tooltip.scroll.product");
-                if (slotIndex == 10) scrollMsg = Component.translatable("menu.vendingblock.tooltip.scroll.price");
+                scrollMsg = Component.translatable("menu.vendingblock.tooltip.scroll.product");
 
                 if (!stack.isEmpty()) {
                     if (Config.Client.SCROLLTIP_POSITION.get() == Config.Client.ScrolltipPosition.ITEM_TOOLTIP) {
@@ -103,8 +101,11 @@ public class VendorBlockScreen extends AbstractContainerScreen<VendorBlockMenu> 
             Component tooltip = Component.translatable("menu.vendingblock.tooltip.product");
             guiGraphics.renderTooltip(this.font, tooltip, mouseX, mouseY);
         }
-        else if (isMouseOverSlot(mouseX, mouseY, x + 26, y + 53) && isSlotEmpty(10, filterSlots)) {
-            Component tooltip = Component.translatable("menu.vendingblock.tooltip.price");
+        else if (isMouseOverSlot(mouseX, mouseY, x + 26, y + 53)) {
+            long price = menu.blockEntity.getCurrencyPrice();
+            Component tooltip = price == 0L ?
+                Component.translatable("menu.vendingblock.tooltip.price.free") :
+                Component.translatable("menu.vendingblock.tooltip.price.currency", price);
             guiGraphics.renderTooltip(this.font, tooltip, mouseX, mouseY);
         }
         else if (isMouseOverSlot(mouseX, mouseY, x + 134, y + 17) && isSlotEmpty(11, filterSlots)) {
@@ -141,24 +142,42 @@ public class VendorBlockScreen extends AbstractContainerScreen<VendorBlockMenu> 
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
 
-        int slot = -1;
-        if (isMouseOverSlot((int)mouseX, (int)mouseY, x + 26, y + 17)) { slot = 0; }
-        else if (isMouseOverSlot((int)mouseX, (int)mouseY, x + 26, y + 53)) { slot = 10; }
-
-        if (slot == 0 || slot == 10) {
-            ItemStack stack = menu.blockEntity.inventory.getStackInSlot(slot).copy();
+        // Product slot scrolling
+        if (isMouseOverSlot((int)mouseX, (int)mouseY, x + 26, y + 17)) {
+            ItemStack stack = menu.blockEntity.inventory.getStackInSlot(0).copy();
             if (!stack.isEmpty()) {
                 int newCount = stack.getCount() + (delta < 0 ? -1 : 1);
                 newCount = Math.max(1, newCount);
-                newCount = Math.min(newCount, 99); // Crashes at 100 // TODO figure out how to remove this limit
+                newCount = Math.min(newCount, 99);
                 if (stack.getMaxStackSize() == 1) newCount = Math.min(newCount, 9);
                 stack.setCount(newCount);
                 com.furglitch.vendingblock.network.FilterSlotUpdatePacket packet =
                     new com.furglitch.vendingblock.network.FilterSlotUpdatePacket(
-                        menu.blockEntity.getBlockPos(), slot, stack);
+                        menu.blockEntity.getBlockPos(), 0, stack);
                 net.neoforged.neoforge.network.PacketDistributor.sendToServer(packet);
             }
+            return true;
         }
+        // Currency price scrolling
+        else if (isMouseOverSlot((int)mouseX, (int)mouseY, x + 26, y + 53)) {
+            long currentPrice = menu.blockEntity.getCurrencyPrice();
+            long adjustment = delta < 0 ? -1 : 1;
+
+            // Shift for larger adjustments
+            if (hasShiftDown()) adjustment *= 10;
+            // Ctrl for even larger adjustments
+            if (hasControlDown()) adjustment *= 100;
+
+            long newPrice = Math.max(0L, currentPrice + adjustment);
+            newPrice = Math.min(newPrice, 999999999L); // Cap at ~1 billion
+
+            com.furglitch.vendingblock.network.CurrencyPriceUpdatePacket packet =
+                new com.furglitch.vendingblock.network.CurrencyPriceUpdatePacket(
+                    menu.blockEntity.getBlockPos(), newPrice);
+            net.neoforged.neoforge.network.PacketDistributor.sendToServer(packet);
+            return true;
+        }
+
         return super.mouseScrolled(mouseX, mouseY, unused, delta);
     }
 

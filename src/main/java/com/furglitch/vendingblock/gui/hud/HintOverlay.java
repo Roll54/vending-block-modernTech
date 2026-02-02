@@ -42,26 +42,15 @@ public class HintOverlay {
 
     private static void renderHint(GuiGraphics gui, VendorBlockEntity entity, Minecraft mc) {
         ItemStack sellItem = entity.inventory.getStackInSlot(0); // product
-        ItemStack buyItem = entity.inventory.getStackInSlot(10); // price
-        if (sellItem.isEmpty() && buyItem.isEmpty()) return;
+        long currencyPrice = entity.getCurrencyPrice(); // currency price
+        if (sellItem.isEmpty()) return;
 
-        switch ((sellItem.isEmpty() ? 0 : 1) << 1 | (buyItem.isEmpty() ? 0 : 1)) {
-            case 3: // trade - !sellItem.isEmpty() && !buyItem.isEmpty()
-                saleType = 1;
-                break;
-            case 2: // giveaway - !sellItem.isEmpty() && buyItem.isEmpty()
-                saleType = 2;
-                break;
-            case 1: // donation - sellItem.isEmpty() && !buyItem.isEmpty()
-                saleType = 3;
-                break;
-            default:
-                saleType = 0;
-                break;
-        }
+        // Determine sale type: 1 = paid sale, 2 = giveaway
+        saleType = currencyPrice > 0L ? 1 : 2;
+
         if (entity.hasError) errorText = getErrorString(entity.errorCode);
 
-        HintDimensions dimensions = calculateDimensions(mc, entity.getOwnerUser(), sellItem, buyItem, saleType, mc.font.lineHeight+4, entity.hasError);
+        HintDimensions dimensions = calculateDimensions(mc, entity.getOwnerUser(), sellItem, currencyPrice, saleType, mc.font.lineHeight+4, entity.hasError);
 
         int margin = 8;
         int w = dimensions.width + (margin * 2);
@@ -69,36 +58,31 @@ public class HintOverlay {
         int x = (mc.getWindow().getGuiScaledWidth() - w) / 2;
         int y = 8;
 
-        renderContent(gui, mc, entity.getOwnerUser(), sellItem, buyItem, x, y + margin, w, mc.font.lineHeight+4, entity.hasError);
+        renderContent(gui, mc, entity.getOwnerUser(), sellItem, currencyPrice, x, y + margin, w, mc.font.lineHeight+4, entity.hasError);
         drawBackground(gui, x, y, w, h);
     }
 
-    private static HintDimensions calculateDimensions(Minecraft mc, String owner, ItemStack sellItem, ItemStack buyItem, int saleType, int lineHeight, boolean error) {
+    private static HintDimensions calculateDimensions(Minecraft mc, String owner, ItemStack sellItem, long currencyPrice, int saleType, int lineHeight, boolean error) {
         int maxWidth = 0;
         int totalHeight = 0;
 
         maxWidth = Math.max(maxWidth, mc.font.width(owner));
         totalHeight += lineHeight;
         switch (saleType) {
-            case 1:
+            case 1: // Paid sale with currency
                 sellItemText = Component.translatable("hint.vendingblock.sell");
                 buyItemText = Component.translatable("hint.vendingblock.buy");
+                String priceText = currencyPrice + " coins";
                 maxWidth = Math.max(maxWidth, mc.font.width(sellItemText.getString()));
                 maxWidth = Math.max(maxWidth, mc.font.width(buyItemText.getString()));
-                maxWidth = Math.max(maxWidth, calculateItemDimensions(mc, buyItem).width);
+                maxWidth = Math.max(maxWidth, mc.font.width(priceText));
                 maxWidth = Math.max(maxWidth, calculateItemDimensions(mc, sellItem).width);
                 totalHeight += lineHeight * 4.2;
                 break;
-            case 2:
+            case 2: // Free giveaway
                 sellItemText = Component.translatable("hint.vendingblock.giveaway");
                 maxWidth = Math.max(maxWidth, mc.font.width(sellItemText.getString()));
                 maxWidth = Math.max(maxWidth, calculateItemDimensions(mc, sellItem).width);
-                totalHeight += lineHeight * 2.1;
-                break;
-            case 3:
-                buyItemText = Component.translatable("hint.vendingblock.request");
-                maxWidth = Math.max(maxWidth, mc.font.width(buyItemText.getString()));
-                maxWidth = Math.max(maxWidth, calculateItemDimensions(mc, buyItem).width);
                 totalHeight += lineHeight * 2.1;
                 break;
         }
@@ -133,37 +117,28 @@ public class HintOverlay {
         gui.fill(x + w - 1, y, x + w, y + h, ColorBDR);
     }
 
-    public static void renderContent(GuiGraphics gui, Minecraft mc, String owner, ItemStack sellItem, ItemStack buyItem, int x, int y, int w, int h, boolean error) {
+    public static void renderContent(GuiGraphics gui, Minecraft mc, String owner, ItemStack sellItem, long currencyPrice, int x, int y, int w, int h, boolean error) {
         drawText(gui, mc, owner, x, y, w, ColorTXT);
         y += h;
         
         switch (saleType) {
-            case 1:
+            case 1: // Paid sale
                 drawText(gui, mc, sellItemText.getString(), x, y, w, ColorTXT & 0x80FFFFFF);
                 y += h * 1.2;
                 drawText(gui, mc, sellItem, x, y, w, ColorTXT);
                 y += h;
                 drawText(gui, mc, buyItemText.getString(), x, y, w, ColorTXT & 0x80FFFFFF);
                 y += h * 1.2;
-                drawText(gui, mc, buyItem, x, y, w, ColorTXT);
+                drawText(gui, mc, currencyPrice + " coins", x, y, w, 0xFFFFD700); // Gold color for currency
                 if (error) {
                     y += h;
                     drawText(gui, mc, errorText.getString(), x, y, w, 0xFFba3c3c);
                 }
                 break;
-            case 2:
+            case 2: // Free giveaway
                 drawText(gui, mc, sellItemText.getString(), x, y, w, ColorTXT & 0x80FFFFFF);
                 y += h * 1.2;
                 drawText(gui, mc, sellItem, x, y, w, ColorTXT);
-                if (error) {
-                    y += h;
-                    drawText(gui, mc, errorText.getString(), x, y, w, 0xFFba3c3c);
-                }
-                break;
-            case 3:
-                drawText(gui, mc, buyItemText.getString(), x, y, w, ColorTXT & 0x80FFFFFF);
-                y += h * 1.2;
-                drawText(gui, mc, buyItem, x, y, w, ColorTXT);
                 if (error) {
                     y += h;
                     drawText(gui, mc, errorText.getString(), x, y, w, 0xFFba3c3c);

@@ -35,8 +35,24 @@ public class VendorBlockEntity extends BlockEntity implements MenuProvider{
     public boolean hasError = false;
     public int errorCode = 0; // 0 = no error, 1 = no stock, 2 = no space, 3 = not set
 
+    // Currency system integration
+    private long currencyPrice = 0L; // Price in currency units
+
     public VendorBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntityRegistry.VENDOR_BE.get(), pos, state);
+    }
+
+    public long getCurrencyPrice() {
+        return currencyPrice;
+    }
+
+    public void setCurrencyPrice(long price) {
+        this.currencyPrice = Math.max(0L, price);
+        setChanged();
+        if (!level.isClientSide()) {
+            level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+            checkErrorState();
+        }
     }
 
     @Override
@@ -54,8 +70,6 @@ public class VendorBlockEntity extends BlockEntity implements MenuProvider{
     public void setFilterContents(int type, ItemStack stack) {
         if (type == 1) {
             this.inventory.setStackInSlot(0, stack);
-        } else if (type == 2) {
-            this.inventory.setStackInSlot(10, stack);
         } else if (type == 3) {
             this.inventory.setStackInSlot(11, stack);
         }
@@ -64,8 +78,6 @@ public class VendorBlockEntity extends BlockEntity implements MenuProvider{
     public void getFilterContents(int type) {
         if (type == 1) {
             this.inventory.getStackInSlot(0);
-        } else if (type == 2) {
-            this.inventory.getStackInSlot(10);
         } else if (type == 3) {
             this.inventory.getStackInSlot(11);
         }
@@ -187,7 +199,8 @@ public class VendorBlockEntity extends BlockEntity implements MenuProvider{
     public void drops() {
         SimpleContainer inv = new SimpleContainer(inventory.getSlots());
         for (int i = 0; i < inventory.getSlots(); i++) {
-            if (i != 0 && i != 10 && i != 11) {
+            // Don't drop filter slots (0 = product, 11 = facade)
+            if (i != 0 && i != 11) {
                 inv.setItem(i, inventory.getStackInSlot(i));
             }
         }
@@ -301,6 +314,7 @@ public class VendorBlockEntity extends BlockEntity implements MenuProvider{
         tag.putInt("errorCode", this.errorCode);
         tag.putBoolean("infiniteInventory", this.infiniteInventory);
         tag.putBoolean("discardsPayment", this.discardsPayment);
+        tag.putLong("currencyPrice", this.currencyPrice);
     }
 
     @Override
@@ -314,7 +328,8 @@ public class VendorBlockEntity extends BlockEntity implements MenuProvider{
         if (tag.contains("errorCode")) this.errorCode = tag.getInt("errorCode");
         this.infiniteInventory = tag.getBoolean("infiniteInventory");
         this.discardsPayment = tag.getBoolean("discardsPayment");
-        
+        this.currencyPrice = tag.getLong("currencyPrice");
+
         if (level != null && !level.isClientSide()) checkErrorState();
     }
 
@@ -334,29 +349,22 @@ public class VendorBlockEntity extends BlockEntity implements MenuProvider{
 
     public void checkErrorState() {
         ItemStack product = inventory.getStackInSlot(0);
-        ItemStack price = inventory.getStackInSlot(10);
-        
+
         boolean blockHasStock = VendorBlockInventory.checkStock(this, product);
-        boolean blockHasSpace = VendorBlockInventory.checkStockSpace(this, product, price);
-        
-        updateErrorState(blockHasStock, blockHasSpace, product, price);
+
+        updateErrorState(blockHasStock, product);
     }
 
-    public void updateErrorState(boolean blockHasStock, boolean blockHasSpace, ItemStack product, ItemStack price) {
+    public void updateErrorState(boolean blockHasStock, ItemStack product) {
         this.hasError = false;
         this.errorCode = 0;
 
-        if (product.isEmpty() && price.isEmpty()) {
+        if (product.isEmpty()) {
             this.hasError = true;
-            this.errorCode = 3;
-        } else {
-            if (!blockHasStock) {
-                this.hasError = true;
-                this.errorCode = 1;
-            } else if (!blockHasSpace) {
-                this.hasError = true;
-                this.errorCode = 2;
-            }
+            this.errorCode = 3; // not set up
+        } else if (!blockHasStock) {
+            this.hasError = true;
+            this.errorCode = 1; // out of stock
         }
         
         setChanged();

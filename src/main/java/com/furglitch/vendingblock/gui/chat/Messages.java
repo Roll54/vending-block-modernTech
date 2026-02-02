@@ -4,6 +4,24 @@ import net.minecraft.network.chat.Component;
 
 public class Messages {
 
+    // Currency-based messages
+    public static Component playerBoughtCurrency(int count, Component item, String owner, long price) {
+        return Component.translatable("msg.vendingblock.sell.currency", count, item, owner, price);
+    }
+
+    public static Component ownerSoldCurrency(int count, Component item, String player, long price) {
+        return Component.translatable("msg.vendingblock.sell.owner.currency", count, item, player, price);
+    }
+
+    public static Component playerInsufficientCurrency(long required) {
+        return Component.translatable("msg.vendingblock.insufficient.currency", required);
+    }
+
+    public static Component transactionFailed() {
+        return Component.translatable("msg.vendingblock.transaction.failed");
+    }
+
+    // Legacy item-based messages (kept for compatibility if needed)
     public static Component playerBought(int count, Component item, String owner, int sellCount, Component sellItem) {
         return Component.translatable("msg.vendingblock.sell", count, item, owner, sellCount, sellItem);
     }
@@ -68,3 +86,5 @@ public class Messages {
         return Component.translatable("msg.vendingblock.blacklist.fullBlock", item);
     }
 }
+
+

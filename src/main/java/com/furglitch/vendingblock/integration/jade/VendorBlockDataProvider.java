@@ -23,11 +23,8 @@ public enum VendorBlockDataProvider implements IServerDataProvider<BlockAccessor
                 tag.putInt("productCount", product.getCount());
             }
 
-            ItemStack price = entity.inventory.getStackInSlot(10);
-            if (!price.isEmpty()) {
-                tag.putString("priceName", price.getHoverName().getString());
-                tag.putInt("priceCount", price.getCount());
-            }
+            long currencyPrice = entity.getCurrencyPrice();
+            tag.putLong("currencyPrice", currencyPrice);
 
             tag.putBoolean("hasError", entity.hasError);
             tag.putInt("errorCode", entity.errorCode);
