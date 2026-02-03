@@ -5,6 +5,7 @@ import com.furglitch.vendingblock.blockentity.VendorBlockEntity;
 import com.furglitch.vendingblock.gui.chat.Messages;
 import com.roll_54.roll_mod_currency.currency.CurrencyRepository;
 
+import com.roll_54.roll_mod_currency.currency.CurrencyType;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -57,7 +58,7 @@ public class VendorBlockTransaction {
             }
         } else {
             // Currency purchase
-            long playerBalance = CurrencyRepository.getBalance(serverBuyer.getUUID());
+            long playerBalance = CurrencyRepository.getBalance(serverBuyer.getUUID(), CurrencyType.MAIN);
 
             if (playerBalance < price) {
                 buyer.sendSystemMessage(Messages.playerInsufficientCurrency(price));
@@ -69,14 +70,14 @@ public class VendorBlockTransaction {
             boolean transferSuccess = false;
             if (vendor.isDiscarding()) {
                 // Just deduct from buyer, don't transfer to owner
-                CurrencyRepository.setBalance(serverBuyer.getUUID(), playerBalance - price);
+                CurrencyRepository.setBalance(serverBuyer.getUUID(), CurrencyType.MAIN, playerBalance - price);
                 transferSuccess = true;
             } else if (owner != null) {
                 // Transfer from buyer to owner
                 transferSuccess = transfer(serverBuyer, owner, price);
             } else {
                 // Owner offline, just deduct from buyer
-                CurrencyRepository.setBalance(serverBuyer.getUUID(), playerBalance - price);
+                CurrencyRepository.setBalance(serverBuyer.getUUID(), CurrencyType.MAIN,playerBalance - price);
                 transferSuccess = true;
             }
 
@@ -103,7 +104,7 @@ public class VendorBlockTransaction {
         if (from.getUUID().equals(to.getUUID())) {
             return false;
         }
-        return CurrencyRepository.transfer(from.getUUID(), to.getUUID(), amount);
+        return CurrencyRepository.transfer(from.getUUID(), to.getUUID(), CurrencyType.MAIN,amount);
     }
 
     private static void giveProduct(Player buyer, VendorBlockEntity vendor, ItemStack product) {
