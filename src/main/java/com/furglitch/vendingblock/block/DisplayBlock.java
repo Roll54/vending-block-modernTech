@@ -77,7 +77,7 @@ public class DisplayBlock extends BaseEntityBlock {
 
             if (displayBlockEntity.isOwner(player) && !level.isClientSide()) {
                 displayBlockEntity.updateOwnershipInfo(player);
-                ((ServerPlayer) player).openMenu(new SimpleMenuProvider(displayBlockEntity, Component.translatable("menu.vendingblock.display.settings")), pos);
+                ((ServerPlayer) player).openMenu(new SimpleMenuProvider(displayBlockEntity, Component.translatable("menu.roll_mod_shops.display.settings")), pos);
                 level.playSound(player, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 2.0F);
             }
         }

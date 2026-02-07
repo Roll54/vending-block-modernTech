@@ -1,0 +1,21 @@
+{
+    "type": "minecraft:block",
+    "random_sequence": "vendingblock:blocks/display_block",
+    "pools": [
+        {
+            "rolls": 1,
+            "bonus_rolls": 0.0,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "vendingblock:display_block"
+                }
+            ],
+            "conditions": [
+                {
+                    "condition": "minecraft:survives_explosion"
+                }
+            ]
+        }
+    ]
+}

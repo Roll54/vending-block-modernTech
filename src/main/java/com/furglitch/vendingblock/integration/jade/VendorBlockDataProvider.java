@@ -33,6 +33,6 @@ public enum VendorBlockDataProvider implements IServerDataProvider<BlockAccessor
 
     @Override
     public ResourceLocation getUid() {
-        return ResourceLocation.fromNamespaceAndPath("vendingblock", "vendor_data");
+        return ResourceLocation.fromNamespaceAndPath("roll_mod_shops", "vendor_data");
     }
 }

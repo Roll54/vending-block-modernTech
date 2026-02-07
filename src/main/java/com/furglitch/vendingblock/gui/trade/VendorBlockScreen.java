@@ -65,7 +65,7 @@ public class VendorBlockScreen extends AbstractContainerScreen<VendorBlockMenu> 
             int slotIndex = filterSlot.getSlotIndex();
             if (slotIndex == 0) {
                 ItemStack stack = hoveredSlot.getItem();
-                scrollMsg = Component.translatable("menu.vendingblock.tooltip.scroll.product");
+                scrollMsg = Component.translatable("menu.roll_mod_shops.tooltip.scroll.product");
 
                 if (!stack.isEmpty()) {
                     if (Config.Client.SCROLLTIP_POSITION.get() == Config.Client.ScrolltipPosition.ITEM_TOOLTIP) {
@@ -98,18 +98,18 @@ public class VendorBlockScreen extends AbstractContainerScreen<VendorBlockMenu> 
         List<FilterSlot> filterSlots = getFilterSlots();
         
         if (isMouseOverSlot(mouseX, mouseY, x + 26, y + 17) && isSlotEmpty(0, filterSlots)) {
-            Component tooltip = Component.translatable("menu.vendingblock.tooltip.product");
+            Component tooltip = Component.translatable("menu.roll_mod_shops.tooltip.product");
             guiGraphics.renderTooltip(this.font, tooltip, mouseX, mouseY);
         }
         else if (isMouseOverSlot(mouseX, mouseY, x + 26, y + 53)) {
             long price = menu.blockEntity.getCurrencyPrice();
             Component tooltip = price == 0L ?
-                Component.translatable("menu.vendingblock.tooltip.price.free") :
-                Component.translatable("menu.vendingblock.tooltip.price.currency", price);
+                Component.translatable("menu.roll_mod_shops.tooltip.price.free") :
+                Component.translatable("menu.roll_mod_shops.tooltip.price.currency", price);
             guiGraphics.renderTooltip(this.font, tooltip, mouseX, mouseY);
         }
         else if (isMouseOverSlot(mouseX, mouseY, x + 134, y + 17) && isSlotEmpty(11, filterSlots)) {
-            Component tooltip = Component.translatable("menu.vendingblock.tooltip.facade");
+            Component tooltip = Component.translatable("menu.roll_mod_shops.tooltip.facade");
             guiGraphics.renderTooltip(this.font, tooltip, mouseX, mouseY);
         }
     }

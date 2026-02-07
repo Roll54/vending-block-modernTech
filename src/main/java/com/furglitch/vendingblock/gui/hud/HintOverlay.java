@@ -70,8 +70,8 @@ public class HintOverlay {
         totalHeight += lineHeight;
         switch (saleType) {
             case 1: // Paid sale with currency
-                sellItemText = Component.translatable("hint.vendingblock.sell");
-                buyItemText = Component.translatable("hint.vendingblock.buy");
+                sellItemText = Component.translatable("hint.roll_mod_shops.sell");
+                buyItemText = Component.translatable("hint.roll_mod_shops.buy");
                 String priceText = currencyPrice + " coins";
                 maxWidth = Math.max(maxWidth, mc.font.width(sellItemText.getString()));
                 maxWidth = Math.max(maxWidth, mc.font.width(buyItemText.getString()));
@@ -80,7 +80,7 @@ public class HintOverlay {
                 totalHeight += lineHeight * 4.2;
                 break;
             case 2: // Free giveaway
-                sellItemText = Component.translatable("hint.vendingblock.giveaway");
+                sellItemText = Component.translatable("hint.roll_mod_shops.giveaway");
                 maxWidth = Math.max(maxWidth, mc.font.width(sellItemText.getString()));
                 maxWidth = Math.max(maxWidth, calculateItemDimensions(mc, sellItem).width);
                 totalHeight += lineHeight * 2.1;
@@ -169,9 +169,9 @@ public class HintOverlay {
     }
 
     public static Component getErrorString(int code) {
-        if (code == 1) return Component.translatable("hint.vendingblock.error.sold");
-        else if (code == 2) return Component.translatable("hint.vendingblock.error.full");
-        else if (code == 3) return Component.translatable("hint.vendingblock.error.empty");
+        if (code == 1) return Component.translatable("hint.roll_mod_shops.error.sold");
+        else if (code == 2) return Component.translatable("hint.roll_mod_shops.error.full");
+        else if (code == 3) return Component.translatable("hint.roll_mod_shops.error.empty");
         else return Component.literal("");
     }
 

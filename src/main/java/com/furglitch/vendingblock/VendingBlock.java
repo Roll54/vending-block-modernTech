@@ -36,7 +36,7 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 @Mod(VendingBlock.MODID)
 public class VendingBlock {
 
-    public static final String MODID = "vendingblock";
+    public static final String MODID = "roll_mod_shops";
     private static final Logger LOGGER = LogUtils.getLogger();
     
     public VendingBlock(IEventBus modEventBus, ModContainer modContainer) {
@@ -54,7 +54,7 @@ public class VendingBlock {
         modEventBus.addListener(com.furglitch.vendingblock.network.NetworkHandler::register);
         modContainer.registerConfig(ModConfig.Type.CLIENT, Config.Client.SPEC);
         modContainer.registerConfig(ModConfig.Type.SERVER, Config.Server.SPEC);
-        Mixins.addConfiguration("vendingblock.mixins.json");
+        Mixins.addConfiguration("roll_mod_shops.mixins.json");
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {

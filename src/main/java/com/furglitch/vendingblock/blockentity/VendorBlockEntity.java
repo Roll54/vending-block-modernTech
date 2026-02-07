@@ -57,7 +57,7 @@ public class VendorBlockEntity extends BlockEntity implements MenuProvider{
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("menu.vendingblock.settings");
+        return Component.translatable("menu.roll_mod_shops.settings");
     }
 
     public void clearContents() {

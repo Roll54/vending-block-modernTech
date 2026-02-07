@@ -15,7 +15,7 @@ public class VendorBlockWarningRenderer {
     public void renderErrorCube(VendorBlockEntity entity, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
         
         ResourceLocation atlasLoc = ResourceLocation.withDefaultNamespace("textures/atlas/blocks.png");
-        ResourceLocation errorTextureLoc = ResourceLocation.fromNamespaceAndPath("vendingblock", "block/error");
+        ResourceLocation errorTextureLoc = ResourceLocation.fromNamespaceAndPath("roll_mod_shops", "block/error");
         
         TextureAtlasSprite errorSprite = Minecraft.getInstance().getModelManager().getAtlas(atlasLoc).getSprite(errorTextureLoc);
         VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.cutout());

@@ -1,0 +1,82 @@
+{
+  "block.roll_mod_shops.vending_block": "Торговий блок",
+  "block.roll_mod_shops.display_block": "Блок вітрини",
+  "item.roll_mod_shops.vendor_key": "Ключ продавця",
+  "ui.roll_mod_shops.creative_tab": "Торговий блок",
+
+
+  "hint.roll_mod_shops.sell": "продає",
+  "hint.roll_mod_shops.buy": "за",
+  "hint.roll_mod_shops.request": "запитує",
+  "hint.roll_mod_shops.giveaway": "роздає",
+  "hint.roll_mod_shops.error.sold": "Розпродано!",
+  "hint.roll_mod_shops.error.full": "Інвентар заповнений!",
+  "hint.roll_mod_shops.error.empty": "Не налаштовано!",
+
+  "jade.roll_mod_shops.sell": "Продаж: %s",
+  "jade.roll_mod_shops.buy": "Купівля: %s",
+  "jade.roll_mod_shops.request": "Запит: %s",
+  "jade.roll_mod_shops.giveaway": "Роздача: %s",
+  "jade.roll_mod_shops.giveaway.free": "БЕЗКОШТОВНО",
+  "jade.roll_mod_shops.owner": "Власник: %s",
+  "jade.roll_mod_shops.error.sold": "Помилка: Розпродано",
+  "jade.roll_mod_shops.error.full": "Помилка: Інвентар заповнений",
+  "jade.roll_mod_shops.error.empty": "Помилка: Не налаштовано",
+
+  "menu.roll_mod_shops.settings": "Налаштування продавця",
+  "menu.roll_mod_shops.admin.settings": "Налаштування адміністратора",
+  "menu.roll_mod_shops.admin.owner": "Власник",
+  "menu.roll_mod_shops.display.settings": "Налаштування вітрини",
+  "menu.roll_mod_shops.tooltip.product": "Товар",
+  "menu.roll_mod_shops.tooltip.price": "Ціна",
+  "menu.roll_mod_shops.tooltip.price.currency": "Ціна: %s монет",
+  "menu.roll_mod_shops.tooltip.price.free": "Безкоштовно (Прокрутіть для встановлення ціни)",
+  "menu.roll_mod_shops.tooltip.facade": "Фасад",
+  "menu.roll_mod_shops.tooltip.infinite": "Нескінченний інвентар",
+  "menu.roll_mod_shops.tooltip.discard": "Видалити оплату",
+
+  "config.roll_mod_shops.scrolltip": "Позиція підказки прокрутки",
+  "menu.roll_mod_shops.tooltip.scroll.product": "Прокрутіть для зміни кількості продажу",
+  "menu.roll_mod_shops.tooltip.scroll.price": "Прокрутіть для зміни ціни купівлі",
+  "menu.roll_mod_shops.tooltip.scroll.currency": "Прокрутіть для зміни ціни (Shift: x10, Ctrl: x100)",
+
+  "msg.roll_mod_shops.sell": "Ви купили %s %s у %s за %s %s",
+  "msg.roll_mod_shops.sell.currency": "Ви купили %s %s у %s за %s монет",
+  "msg.roll_mod_shops.request": "Ви віддали %s %s гравцю %s",
+  "msg.roll_mod_shops.giveaway": "Ви отримали %s %s від %s",
+  "msg.roll_mod_shops.sold": "Цей торговий блок закінчився",
+  "msg.roll_mod_shops.full": "Інвентар цього торгового блоку заповнений",
+  "msg.roll_mod_shops.empty": "Цей торговий блок не налаштовано!",
+  "msg.roll_mod_shops.insufficient.currency": "У вас недостатньо валюти (Потрібно: %s монет)",
+  "msg.roll_mod_shops.transaction.failed": "Транзакція не вдалася! Спробуйте ще раз.",
+
+  "msg.roll_mod_shops.empty.player": "У вас недостатньо %s для цієї транзакції",
+  "msg.roll_mod_shops.full.player": "У вас недостатньо місця в інвентарі для цієї транзакції",
+
+  "msg.roll_mod_shops.sell.owner": "Ваш торговий блок продав %s %s гравцю %s за %s %s",
+  "msg.roll_mod_shops.sell.owner.currency": "Ваш торговий блок продав %s %s гравцю %s за %s монет",
+  "msg.roll_mod_shops.request.owner": "Ваш торговий блок отримав %s %s від %s",
+  "msg.roll_mod_shops.giveaway.owner": "Ваш торговий блок віддав %s %s гравцю %s",
+  "msg.roll_mod_shops.sold.owner": "Ваш торговий блок закінчився",
+  "msg.roll_mod_shops.full.owner": "Інвентар вашого торгового блоку заповнений",
+
+  "roll_mod_shops.configuration.ownerNotifications": "Повідомлення власника продавця",
+  "config.roll_mod_shops.messages.purchase": "Сповіщення про покупку",
+  "config.roll_mod_shops.messages.giveaway": "Сповіщення про роздачу",
+  "config.roll_mod_shops.messages.donation": "Сповіщення про пожертви",
+  "config.roll_mod_shops.messages.outOfStock": "Сповіщення про закінчення товару",
+  "config.roll_mod_shops.messages.fullStorage": "Сповіщення про заповнене сховище",
+
+  "config.roll_mod_shops.server.productBlacklist": "Чорний список товарів",
+  "config.roll_mod_shops.server.facadeBlacklist": "Чорний список фасадів",
+  "msg.roll_mod_shops.blacklist.product": "%s знаходиться в чорному списку і не може бути проданий у торгових блоках на цьому сервері",
+  "msg.roll_mod_shops.blacklist.fullBlock": "%s не є повним блоком і не може використовуватися як фасад торгового блоку.",
+  "msg.roll_mod_shops.blacklist.facade": "%s наразі знаходиться в чорному списку і не може використовуватися як фасад. Це може бути пов'язано з проблемами відображення.",
+
+  "config.roll_mod_shops.creative.keyInTab": "Ключ продавця в креативі",
+
+  "roll_mod_shops.configuration.animationSettings": "Відображення предметів",
+  "config.roll_mod_shops.animation.mode": "Стиль анімації"
+
+
+}

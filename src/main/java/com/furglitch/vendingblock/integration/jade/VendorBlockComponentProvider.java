@@ -29,9 +29,9 @@ public enum VendorBlockComponentProvider implements IBlockComponentProvider {
                 String text = count > 1 ? count + "x " + product : product;
 
                 if (hasPrice) {
-                    tooltip.add(Component.translatable("jade.vendingblock.sell", text));
+                    tooltip.add(Component.translatable("jade.roll_mod_shops.sell", text));
                 } else {
-                    tooltip.add(Component.translatable("jade.vendingblock.giveaway", text));
+                    tooltip.add(Component.translatable("jade.roll_mod_shops.giveaway", text));
                 }
             }
 
@@ -40,15 +40,15 @@ public enum VendorBlockComponentProvider implements IBlockComponentProvider {
 
                 if (price > 0) {
                     String priceText = price + " coins";
-                    tooltip.add(Component.translatable("jade.vendingblock.buy", priceText)
+                    tooltip.add(Component.translatable("jade.roll_mod_shops.buy", priceText)
                         .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xFFD700)))); // Gold color
                 } else if (hasProduct) {
-                    tooltip.add(Component.translatable("jade.vendingblock.giveaway.free")
+                    tooltip.add(Component.translatable("jade.roll_mod_shops.giveaway.free")
                         .setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0x00FF00)))); // Green for free
                 }
             }
 
-            if (serverData.contains("owner")) tooltip.add(Component.translatable("jade.vendingblock.owner", serverData.getString("owner")));
+            if (serverData.contains("owner")) tooltip.add(Component.translatable("jade.roll_mod_shops.owner", serverData.getString("owner")));
 
             if (serverData.contains("hasError")) {
                 boolean hasError = serverData.getBoolean("hasError");
@@ -56,13 +56,13 @@ public enum VendorBlockComponentProvider implements IBlockComponentProvider {
                 if (hasError) {
                     switch (errorCode) {
                         case 1:
-                            tooltip.add(Component.translatable("jade.vendingblock.error.sold").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xba3c3c))));
+                            tooltip.add(Component.translatable("jade.roll_mod_shops.error.sold").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xba3c3c))));
                             break;
                         case 2:
-                            tooltip.add(Component.translatable("jade.vendingblock.error.full").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xba3c3c))));
+                            tooltip.add(Component.translatable("jade.roll_mod_shops.error.full").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xba3c3c))));
                             break;
                         case 3:
-                            tooltip.add(Component.translatable("jade.vendingblock.error.empty").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xba3c3c))));
+                            tooltip.add(Component.translatable("jade.roll_mod_shops.error.empty").setStyle(Style.EMPTY.withColor(TextColor.fromRgb(0xba3c3c))));
                             break;
                         default:
                             break;
@@ -74,7 +74,7 @@ public enum VendorBlockComponentProvider implements IBlockComponentProvider {
 
     @Override
     public ResourceLocation getUid() {
-        return ResourceLocation.fromNamespaceAndPath("vendingblock", "vendor_component");
+        return ResourceLocation.fromNamespaceAndPath("roll_mod_shops", "vendor_component");
     }
 
 }

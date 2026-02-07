@@ -85,11 +85,11 @@ public class VendorBlock extends BaseEntityBlock {
             if (player.getMainHandItem().is(ItemRegistry.VENDOR_KEY.get()) && !level.isClientSide()) {
                 ((ServerPlayer) player).openMenu(new SimpleMenuProvider(
                     (containerId, inventory, playerEntity) -> new VendorAdminMenu(containerId, inventory, vendorBlockEntity), 
-                    Component.translatable("menu.vendingblock.admin.settings")), pos);
+                    Component.translatable("menu.roll_mod_shops.admin.settings")), pos);
                 level.playSound(player, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 2.0F);
             }
             else if (vendorBlockEntity.isOwner(player) && !level.isClientSide()) {
-                ((ServerPlayer) player).openMenu(new SimpleMenuProvider(vendorBlockEntity, Component.translatable("menu.vendingblock.settings")), pos);
+                ((ServerPlayer) player).openMenu(new SimpleMenuProvider(vendorBlockEntity, Component.translatable("menu.roll_mod_shops.settings")), pos);
                 level.playSound(player, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 1.0F, 2.0F);
             } else if (!vendorBlockEntity.isOwner(player) && !level.isClientSide()) {
                 VendorBlockTransaction.purchase(level, player, vendorBlockEntity);

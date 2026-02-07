@@ -16,7 +16,7 @@ tasks.named('wrapper', Wrapper).configure {
 }
 
 tasks.named('jar') {
-    archiveFileName.set("vendingblock-${minecraft_version}-${mod_version}.jar")
+    archiveFileName.set("minestar-vendingblock-${minecraft_version}-${mod_version}.jar")
 }
 
 version = mod_version

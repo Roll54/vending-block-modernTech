@@ -1,0 +1,82 @@
+{
+  "block.roll_mod_shops.vending_block": "Vending Block",
+  "block.roll_mod_shops.display_block": "Display Block",
+  "item.roll_mod_shops.vendor_key": "Vendor's Key",
+  "ui.roll_mod_shops.creative_tab": "Vending Block",
+
+
+  "hint.roll_mod_shops.sell": "is selling",
+  "hint.roll_mod_shops.buy": "for",
+  "hint.roll_mod_shops.request": "is requesting",
+  "hint.roll_mod_shops.giveaway": "is giving away",
+  "hint.roll_mod_shops.error.sold": "Sold Out!",
+  "hint.roll_mod_shops.error.full": "Inventory Full!",
+  "hint.roll_mod_shops.error.empty": "Not Set Up!",
+
+  "jade.roll_mod_shops.sell": "Selling: %s",
+  "jade.roll_mod_shops.buy": "Buying: %s",
+  "jade.roll_mod_shops.request": "Requesting: %s",
+  "jade.roll_mod_shops.giveaway": "Giving Away: %s",
+  "jade.roll_mod_shops.giveaway.free": "FREE",
+  "jade.roll_mod_shops.owner": "Owner: %s",
+  "jade.roll_mod_shops.error.sold": "Error: Sold Out",
+  "jade.roll_mod_shops.error.full": "Error: Inventory Full",
+  "jade.roll_mod_shops.error.empty": "Error: Not Set Up",
+
+  "menu.roll_mod_shops.settings": "Vendor Settings",
+  "menu.roll_mod_shops.admin.settings": "Admin Settings",
+  "menu.roll_mod_shops.admin.owner": "Owner",
+  "menu.roll_mod_shops.display.settings": "Display Settings",
+  "menu.roll_mod_shops.tooltip.product": "Product",
+  "menu.roll_mod_shops.tooltip.price": "Price",
+  "menu.roll_mod_shops.tooltip.price.currency": "Price: %s coins",
+  "menu.roll_mod_shops.tooltip.price.free": "Free (Scroll to set price)",
+  "menu.roll_mod_shops.tooltip.facade": "Facade",
+  "menu.roll_mod_shops.tooltip.infinite": "Infinite Inventory",
+  "menu.roll_mod_shops.tooltip.discard": "Discard Payment",
+  
+  "config.roll_mod_shops.scrolltip": "Scroll Tooltip Position",
+  "menu.roll_mod_shops.tooltip.scroll.product": "Scroll to adjust sale count",
+  "menu.roll_mod_shops.tooltip.scroll.price": "Scroll to adjust buy price",
+  "menu.roll_mod_shops.tooltip.scroll.currency": "Scroll to adjust price (Shift: x10, Ctrl: x100)",
+
+  "msg.roll_mod_shops.sell": "You bought %s %s from %s for %s %s",
+  "msg.roll_mod_shops.sell.currency": "You bought %s %s from %s for %s coins",
+  "msg.roll_mod_shops.request": "You gave %s %s to %s",
+  "msg.roll_mod_shops.giveaway": "You received %s %s from %s",
+  "msg.roll_mod_shops.sold": "This vending block is out of stock",
+  "msg.roll_mod_shops.full": "This vending block's inventory is full",
+  "msg.roll_mod_shops.empty": "This vending block has not been set up!",
+  "msg.roll_mod_shops.insufficient.currency": "You do not have enough currency (Need: %s coins)",
+  "msg.roll_mod_shops.transaction.failed": "Transaction failed! Please try again.",
+
+  "msg.roll_mod_shops.empty.player": "You do not have enough %s for this transaction",
+  "msg.roll_mod_shops.full.player": "You do not have enough inventory space for this transaction",
+
+  "msg.roll_mod_shops.sell.owner": "Your vending block sold %s %s to %s for %s %s",
+  "msg.roll_mod_shops.sell.owner.currency": "Your vending block sold %s %s to %s for %s coins",
+  "msg.roll_mod_shops.request.owner": "Your vending block received %s %s from %s",
+  "msg.roll_mod_shops.giveaway.owner": "Your vending block gave %s %s to %s",
+  "msg.roll_mod_shops.sold.owner": "Your vending block is out of stock",
+  "msg.roll_mod_shops.full.owner": "Your vending block's inventory is full",
+
+  "roll_mod_shops.configuration.ownerNotifications": "Vendor Owner Messages",
+  "config.roll_mod_shops.messages.purchase": "Purchase Notifications",
+  "config.roll_mod_shops.messages.giveaway": "Giveaway Notifications", 
+  "config.roll_mod_shops.messages.donation": "Donation Notifications",
+  "config.roll_mod_shops.messages.outOfStock": "Out of Stock Notifications",
+  "config.roll_mod_shops.messages.fullStorage": "Full Storage Notifications",
+
+  "config.roll_mod_shops.server.productBlacklist": "Product Blacklist",
+  "config.roll_mod_shops.server.facadeBlacklist": "Facade Blacklist",
+  "msg.roll_mod_shops.blacklist.product": "%s is blacklisted and cannot be sold in vending blocks on this server",
+  "msg.roll_mod_shops.blacklist.fullBlock": "%s is not a full block and cannot be used as a vending block facade.",
+  "msg.roll_mod_shops.blacklist.facade": "%s is currently blacklisted and cannot be used as a facade. This may be due to rendering issues.",
+
+  "config.roll_mod_shops.creative.keyInTab": "Creative Vendor's Key",
+
+  "roll_mod_shops.configuration.animationSettings": "Item Display",
+  "config.roll_mod_shops.animation.mode": "Animation Style"
+
+
+}

@@ -33,7 +33,7 @@ public class DisplayBlockEntity extends BlockEntity implements MenuProvider {
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("menu.vendingblock.display.settings");
+        return Component.translatable("menu.roll_mod_shops.display.settings");
     }
 
 

@@ -63,7 +63,7 @@ public class DisplayBlockScreen extends AbstractContainerScreen<DisplayBlockMenu
         List<FilterSlot> filterSlots = getFilterSlots();
 
         if (isMouseOverSlot(mouseX, mouseY, x + 98, y + 35) && isSlotEmpty(1, filterSlots)) {
-            Component tooltip = Component.translatable("menu.vendingblock.tooltip.facade");
+            Component tooltip = Component.translatable("menu.roll_mod_shops.tooltip.facade");
             guiGraphics.renderTooltip(this.font, tooltip, mouseX, mouseY);
         }
     }
