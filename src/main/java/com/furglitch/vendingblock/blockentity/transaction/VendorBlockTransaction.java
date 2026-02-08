@@ -3,6 +3,7 @@ package com.furglitch.vendingblock.blockentity.transaction;
 import com.furglitch.vendingblock.Config;
 import com.furglitch.vendingblock.blockentity.VendorBlockEntity;
 import com.furglitch.vendingblock.gui.chat.Messages;
+import com.roll_54.roll_mod_currency.api.CurrencyService;
 import com.roll_54.roll_mod_currency.currency.CurrencyRepository;
 
 import com.roll_54.roll_mod_currency.currency.CurrencyType;
@@ -104,7 +105,7 @@ public class VendorBlockTransaction {
         if (from.getUUID().equals(to.getUUID())) {
             return false;
         }
-        return CurrencyRepository.transfer(from.getUUID(), to.getUUID(), CurrencyType.MAIN,amount);
+        return CurrencyService.transfer(from, to, CurrencyType.MAIN, amount);
     }
 
     private static void giveProduct(Player buyer, VendorBlockEntity vendor, ItemStack product) {
